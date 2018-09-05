@@ -1,4 +1,4 @@
-# vue-login
+# vue-login-persistent
 
 ![Demo](demo.gif)
 

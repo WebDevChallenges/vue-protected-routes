@@ -6,16 +6,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    accessToken: null,
     loggingIn: false,
-    loginError: null,
-    loginSuccessful: false
+    loginError: null
   },
   mutations: {
     loginStart: state => state.loggingIn = true,
     loginStop: (state, errorMessage) => {
       state.loggingIn = false;
       state.loginError = errorMessage;
-      state.loginSuccessful = !errorMessage;
+    },
+    updateAccessToken: (state, accessToken) => {
+      state.accessToken = accessToken;
     }
   },
   actions: {
@@ -25,12 +27,18 @@ export default new Vuex.Store({
       axios.post('https://reqres.in/api/login', {
         ...loginData
       })
-      .then(() => {
-        commit('loginStop', null)
+      .then(response => {
+        localStorage.setItem('accessToken', response.data.token);
+        commit('loginStop', null);
+        commit('updateAccessToken', response.data.token);
       })
       .catch(error => {
-        commit('loginStop', error.response.data.error)
+        commit('loginStop', error.response.data.error);
+        commit('updateAccessToken', null);
       })
+    },
+    fetchAccessToken({ commit }) {
+      commit('updateAccessToken', localStorage.getItem('accessToken'));
     }
   }
 })
