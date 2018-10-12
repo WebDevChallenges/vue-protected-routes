@@ -1,28 +1,6 @@
 <template>
-  <div id="app">
-    <Login />
-  </div>
+  <router-view></router-view>
 </template>
-
-<script>
-import { mapActions } from 'vuex';
-import Login from './components/Login.vue'
-
-export default {
-  name: 'app',
-  components: {
-    Login
-  },
-  methods: {
-    ...mapActions([
-      'fetchAccessToken'
-    ]),
-  },
-  created() {
-    this.fetchAccessToken();
-  }
-}
-</script>
 
 <style>
 #app {
