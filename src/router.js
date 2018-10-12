@@ -1,12 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store';
 
 Vue.use(Router)
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -18,7 +16,7 @@ export default new Router({
     {
       path: '/users',
       name: 'users',
-      component: () => import(/* webpackChunkName: "users" */ './views/Users.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/Users.vue')
     },
     {
       path: '*',
@@ -26,3 +24,20 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchAccessToken');
+  if (to.fullPath === '/users') {
+    if (!store.state.accessToken) {
+      next('/login');
+    }
+  }
+  if (to.fullPath === '/login') {
+    if (store.state.accessToken) {
+      next('/users');
+    }
+  }
+  next();
+});
+
+export default router;
