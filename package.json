@@ -1,5 +1,5 @@
 {
-  "name": "vue-login-persistent",
+  "name": "vue-protected-routes",
   "version": "0.1.0",
   "private": true,
   "scripts": {

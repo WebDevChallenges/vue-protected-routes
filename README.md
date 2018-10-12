@@ -1,4 +1,4 @@
-# vue-login-persistent
+# vue-protected-routes
 
 ![Demo](demo.gif)
 
